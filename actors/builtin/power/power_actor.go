@@ -277,6 +277,7 @@ func (a Actor) SubmitPoRepForBulkVerify(rt Runtime, sealInfo *proof.SealVerifyIn
 		if st.ProofValidationBatch == nil {
 			mmap, err = adt.MakeEmptyMultimap(store, builtin.DefaultHamtBitwidth, ProofValidationBatchAmtBitwidth)
 			builtin.RequireNoErr(rt, err, exitcode.ErrIllegalState, "failed to create empty proof validation set")
+			rt.Log(rtt.DEBUG, "ProofValidationBatch created")
 		} else {
 			mmap, err = adt.AsMultimap(adt.AsStore(rt), *st.ProofValidationBatch, builtin.DefaultHamtBitwidth, ProofValidationBatchAmtBitwidth)
 			builtin.RequireNoErr(rt, err, exitcode.ErrIllegalState, "failed to load proof batch set")
@@ -351,6 +352,7 @@ func (a Actor) processBatchProofVerifies(rt Runtime, rewret reward.ThisEpochRewa
 	rt.StateTransaction(&st, func() {
 		store := adt.AsStore(rt)
 		if st.ProofValidationBatch == nil {
+			rt.Log(rtt.WARN, "ProofValidationBatch was nil, quitting verification")
 			return
 		}
 		mmap, err := adt.AsMultimap(store, *st.ProofValidationBatch, builtin.DefaultHamtBitwidth, ProofValidationBatchAmtBitwidth)
@@ -408,17 +410,19 @@ func (a Actor) processBatchProofVerifies(rt Runtime, rewret reward.ThisEpochRewa
 
 				if _, exists := seen[snum]; exists {
 					// filter-out duplicates
+					rt.Log(rtt.INFO, "skipped over a duplicate proof")
 					continue
 				}
 
 				seen[snum] = struct{}{}
 				successful = append(successful, snum)
+			} else {
+				rt.Log(rtt.INFO, "a proof failed from miner %s", m)
 			}
 		}
 
 		if len(successful) > 0 {
-			// The exit code is explicitly ignored
-			_ = rt.Send(
+			code := rt.Send(
 				m,
 				builtin.MethodsMiner.ConfirmSectorProofsValid,
 				&builtin.ConfirmSectorProofsParams{
@@ -429,6 +433,11 @@ func (a Actor) processBatchProofVerifies(rt Runtime, rewret reward.ThisEpochRewa
 				abi.NewTokenAmount(0),
 				&builtin.Discard{},
 			)
+			if code.IsError() {
+				rt.Log(rtt.ERROR,
+					"failed to confirm sector proof validity to %s, error code %d",
+					m, code)
+			}
 		}
 	}
 }
@@ -463,6 +472,8 @@ func (a Actor) processDeferredCronEvents(rt Runtime, rewret reward.ThisEpochRewa
 			if len(epochEvents) > 0 {
 				err = events.RemoveAll(epochKey(epoch))
 				builtin.RequireNoErr(rt, err, exitcode.ErrIllegalState, "failed to clear cron events at %v", epoch)
+			} else {
+				rt.Log(rtt.INFO, "no epoch events were loaded")
 			}
 		}
 

@@ -1984,7 +1984,11 @@ func (a Actor) ReportConsensusFault(rt Runtime, params *ReportConsensusFaultPara
 //}
 type WithdrawBalanceParams = miner0.WithdrawBalanceParams
 
-func (a Actor) WithdrawBalance(rt Runtime, params *WithdrawBalanceParams) *abi.EmptyValue {
+// Attempt to withdraw the specified amount from the miner's available balance.
+// Only owner key has permission to withdraw.
+// If less than the specified amount is available, yields the entire available balance.
+// Returns the amount withdrawn.
+func (a Actor) WithdrawBalance(rt Runtime, params *WithdrawBalanceParams) *abi.TokenAmount {
 	var st State
 	if params.AmountRequested.LessThan(big.Zero()) {
 		rt.Abortf(exitcode.ErrIllegalArgument, "negative fund requested for withdrawal: %s", params.AmountRequested)
@@ -2043,7 +2047,7 @@ func (a Actor) WithdrawBalance(rt Runtime, params *WithdrawBalanceParams) *abi.E
 	err := st.CheckBalanceInvariants(rt.CurrentBalance())
 	builtin.RequireNoErr(rt, err, ErrBalanceInvariantBroken, "balance invariants broken")
 
-	return nil
+	return &amountWithdrawn
 }
 
 func (a Actor) RepayDebt(rt Runtime, _ *abi.EmptyValue) *abi.EmptyValue {
@@ -2135,6 +2139,7 @@ func processEarlyTerminations(rt Runtime, rewardSmoothed smoothing.FilterEstimat
 		// This can happen if we end up processing early terminations
 		// before the cron callback fires.
 		if result.IsEmpty() {
+			rt.Log(rtt.INFO, "no early terminations (maybe cron callback hasn't happened yet?)")
 			return
 		}
 
@@ -2182,6 +2187,7 @@ func processEarlyTerminations(rt Runtime, rewardSmoothed smoothing.FilterEstimat
 
 	// We didn't do anything, abort.
 	if result.IsEmpty() {
+		rt.Log(rtt.INFO, "no early terminations")
 		return more
 	}
 
@@ -2416,6 +2422,8 @@ func requestTerminateDeals(rt Runtime, epoch abi.ChainEpoch, dealIDs []abi.DealI
 }
 
 func scheduleEarlyTerminationWork(rt Runtime) {
+	rt.Log(rtt.INFO, "scheduling early terminations with cron...")
+
 	enrollCronEvent(rt, rt.CurrEpoch()+1, &CronEventPayload{
 		EventType: CronEventProcessEarlyTerminations,
 	})
@@ -2633,6 +2641,7 @@ func resolveWorkerAddress(rt Runtime, raw addr.Address) addr.Address {
 
 func burnFunds(rt Runtime, amt abi.TokenAmount) {
 	if amt.GreaterThan(big.Zero()) {
+		rt.Log(rtt.INFO, "burnFunds called with amt=%d attoFIL. receiver address %v", amt, rt.Receiver())
 		code := rt.Send(builtin.BurntFundsActorAddr, builtin.MethodSend, nil, amt, &builtin.Discard{})
 		builtin.RequireSuccess(rt, code, "failed to burn funds")
 	}
