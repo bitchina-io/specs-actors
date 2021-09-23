@@ -2083,8 +2083,7 @@ const (
 	CronEventProcessEarlyTerminations = miner0.CronEventProcessEarlyTerminations
 )
 
-func (a Actor) OnDeferredCronEvent(rt Runtime,
-	payload *builtin.DeferredCronEventPayload) *abi.EmptyValue {
+func (a Actor) OnDeferredCronEvent(rt Runtime, payload *builtin.DeferredCronEventParams) *abi.EmptyValue {
 	rt.ValidateImmediateCallerIs(builtin.StoragePowerActorAddr)
 
 	switch payload.EventType {
@@ -2095,7 +2094,7 @@ func (a Actor) OnDeferredCronEvent(rt Runtime,
 			scheduleEarlyTerminationWork(rt)
 		}
 	default:
-		rt.Log(rtt.ERROR, "onDeferredCronEvent invalid event type!")
+		rt.Log(rtt.ERROR, "onDeferredCronEvent invalid event type: %v", payload.EventType)
 	}
 
 	var st State
