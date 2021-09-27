@@ -109,11 +109,11 @@ var PoStProofPolicies = map[stabi.RegisteredPoStProof]*PoStProofPolicy{
 		ConsensusMinerMinPower:     stabi.NewStoragePower(10 << 40),
 	},
 	stabi.RegisteredPoStProof_StackedDrgWindow32GiBV1: {
-		WindowPoStPartitionSectors: 2349,
+		WindowPoStPartitionSectors: 2,
 		ConsensusMinerMinPower:     stabi.NewStoragePower(10 << 40),
 	},
 	stabi.RegisteredPoStProof_StackedDrgWindow64GiBV1: {
-		WindowPoStPartitionSectors: 2300,
+		WindowPoStPartitionSectors: 2,
 		ConsensusMinerMinPower:     stabi.NewStoragePower(10 << 40),
 	},
 	// Winning PoSt proof types omitted.
