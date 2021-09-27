@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin"
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/miner"
-	"github.com/filecoin-project/specs-actors/v5/actors/util/adt"
-	"github.com/filecoin-project/specs-actors/v5/support/mock"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/miner"
+	"github.com/bitchina-io/specs-actors/v5/actors/util/adt"
+	"github.com/bitchina-io/specs-actors/v5/support/mock"
 )
 
 const testAmtBitwidth = 3

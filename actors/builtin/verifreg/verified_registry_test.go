@@ -11,11 +11,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin"
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/verifreg"
-	"github.com/filecoin-project/specs-actors/v5/actors/util/adt"
-	"github.com/filecoin-project/specs-actors/v5/support/mock"
-	tutil "github.com/filecoin-project/specs-actors/v5/support/testing"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/verifreg"
+	"github.com/bitchina-io/specs-actors/v5/actors/util/adt"
+	"github.com/bitchina-io/specs-actors/v5/support/mock"
+	tutil "github.com/bitchina-io/specs-actors/v5/support/testing"
 )
 
 func TestExports(t *testing.T) {

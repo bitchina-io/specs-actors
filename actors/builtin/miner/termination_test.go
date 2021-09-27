@@ -7,7 +7,7 @@ import (
 	"github.com/filecoin-project/go-state-types/abi"
 	"github.com/stretchr/testify/require"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/miner"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/miner"
 )
 
 func TestTerminationResult(t *testing.T) {

@@ -15,15 +15,15 @@ import (
 	assert "github.com/stretchr/testify/assert"
 	require "github.com/stretchr/testify/require"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin"
-	initact "github.com/filecoin-project/specs-actors/v5/actors/builtin/init"
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/market"
-	mineract "github.com/filecoin-project/specs-actors/v5/actors/builtin/miner"
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/power"
-	"github.com/filecoin-project/specs-actors/v5/actors/runtime/proof"
-	"github.com/filecoin-project/specs-actors/v5/actors/util/adt"
-	"github.com/filecoin-project/specs-actors/v5/support/mock"
-	tutil "github.com/filecoin-project/specs-actors/v5/support/testing"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin"
+	initact "github.com/bitchina-io/specs-actors/v5/actors/builtin/init"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/market"
+	mineract "github.com/bitchina-io/specs-actors/v5/actors/builtin/miner"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/power"
+	"github.com/bitchina-io/specs-actors/v5/actors/runtime/proof"
+	"github.com/bitchina-io/specs-actors/v5/actors/util/adt"
+	"github.com/bitchina-io/specs-actors/v5/support/mock"
+	tutil "github.com/bitchina-io/specs-actors/v5/support/testing"
 )
 
 func TestExports(t *testing.T) {

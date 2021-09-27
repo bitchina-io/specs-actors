@@ -11,9 +11,9 @@ import (
 	mh "github.com/multiformats/go-multihash"
 	cbg "github.com/whyrusleeping/cbor-gen"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin"
-	"github.com/filecoin-project/specs-actors/v5/actors/runtime"
-	tutil "github.com/filecoin-project/specs-actors/v5/support/testing"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin"
+	"github.com/bitchina-io/specs-actors/v5/actors/runtime"
+	tutil "github.com/bitchina-io/specs-actors/v5/support/testing"
 )
 
 type FakeActor struct{}

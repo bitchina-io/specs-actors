@@ -11,11 +11,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin"
-	init_ "github.com/filecoin-project/specs-actors/v5/actors/builtin/init"
-	"github.com/filecoin-project/specs-actors/v5/actors/builtin/multisig"
-	"github.com/filecoin-project/specs-actors/v5/support/ipld"
-	"github.com/filecoin-project/specs-actors/v5/support/vm"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin"
+	init_ "github.com/bitchina-io/specs-actors/v5/actors/builtin/init"
+	"github.com/bitchina-io/specs-actors/v5/actors/builtin/multisig"
+	"github.com/bitchina-io/specs-actors/v5/support/ipld"
+	"github.com/bitchina-io/specs-actors/v5/support/vm"
 )
 
 func TestMultisigDeleteSelf2Of3RemovedIsProposer(t *testing.T) {
